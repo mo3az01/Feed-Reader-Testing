@@ -74,12 +74,12 @@ $(function() {
          it('menu element is show by click',function(){
             if(body.hasClass("menu-hidden") === true){
                 menuIcon.trigger( "click" );
-                expect(body.hasClass("")).toBe(true);
+                expect(body.hasClass("menu-hidden")).toBe(false);
             }
         });
 
         it('menu element is hide by click again',function(){
-            if(body.hasClass("") === true){
+            if(body.hasClass("menu-hidden") === false){
                 menuIcon.trigger( "click" );            
                 expect(body.hasClass("menu-hidden")).toBe(true);
             }
@@ -97,12 +97,10 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
          beforeEach(function(done){
-            loadFeed(0,function(){
-                done();                
-            });
+            loadFeed(0,done);
          });
-         it('Load feed called and completes',function(done){
-              expect($('.feed').children().length).not.toBe(0);
+         it('Load feed called and completes and single entry element inside the container',function(done){
+              expect($('.feed .entry')).toBeDefined();
               done();
          });
 
@@ -114,21 +112,17 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-         var id = Math.floor(Math.random()*allFeeds.length);;
+         var id = Math.floor(Math.random()*allFeeds.length);
          var container = $('.feed');         
          var prevChildrens = container.children();
 
          beforeEach(function(done){
-            loadFeed(id,function(){
-                done();                
-            });
+            loadFeed(id,done);
          });
          it('Select Feed change the content',function(done){
               expect(prevChildrens).not.toBe(container.children());
               if(id !== 0){
-                loadFeed(0,function(){
-                    done();                
-                });
+                loadFeed(0,done);
             }else{
                 done();
             }
